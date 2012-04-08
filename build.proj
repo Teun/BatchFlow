@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Make" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="MSBuild.Community.Tasks.Zip" AssemblyFile="ExternalDll/MSBuild.Community.Tasks.dll" />
+  
+   <ItemGroup>  
+     <DefaultExclude Include="**\.svn\**" />  
+   </ItemGroup>  
+   <ItemGroup>  
+     <FileInclude Include="BatchFlow.dll" />
+     <FileInclude Include="log4net.dll" />
+     <FileInclude Include="license.txt" />  
+   </ItemGroup>  
+
+  <ItemGroup>  
+     <ZipFiles Include="@(FileInclude)" Exclude="@(DefaultExclude)" />  
+  </ItemGroup>  
+
+  <Target Name="Make" >
+    <MSBuild Projects="BatchFlow.sln" Targets="Build" Properties="Configuration=Release "/>
+    <ItemGroup>
+      <FilesToCopy Include="BatchFlow\bin\Release\*.*"/>
+    </ItemGroup>
+    <Copy
+      SourceFiles="@(FilesToCopy)"
+      DestinationFolder="."
+        />
+    <Zip Files="@(ZipFiles)"
+         ZipFileName=".\BatchFlow.zip" />
+  </Target>
+</Project>

@@ -1,0 +1,6 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Default" />
+  <Config name="Default" binpathtype="Auto">
+    <assembly path="BatchFlow.UnitTests\bin\Debug\BatchFlow.UnitTests.dll" />
+  </Config>
+</NUnitProject>
