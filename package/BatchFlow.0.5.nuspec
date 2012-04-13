@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <version>0.5</version>
+    <authors>Teun Duynstee</authors>
+    <owners>Teun Duynstee</owners>
+    <projectUrl>https://github.com/Teun/BatchFlow</projectUrl>
+    <dependencies>
+      <dependency id="log4net" version="2.0.0" />
+    </dependencies>
+    <id>BatchFlow</id>
+    <title>BatchFlow</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>BatchFlow is a .NET library that takes care of all the plumbing you need around large batch processing, especially the producer/consumer pattern that you (probably) should use.</description>
+    <summary>BatchFlow is a .NET library that takes care of all the plumbing you need around large batch processing, especially the producer/consumer pattern that you (probably) should use.</summary>
+  </metadata>
+  <files>
+    <file src="..\BatchFlow\bin\Debug\BatchFlow.dll" target="lib\net35\BatchFlow.dll" />
+  </files>
+</package>
