@@ -99,6 +99,15 @@ namespace BatchFlow
                     t.Abort();
                 }
             }
+            // Clear instream
+            BoundedBlockingQueue queueIn = this.StreamIn as BoundedBlockingQueue;
+            if (queueIn != null)
+            {
+                queueIn.CloseEntrance();
+                while (queueIn.Count > 0) queueIn.ReceiveInner();
+            }
+            // this.StreamIn. close entrance
+            // clear all items in it
             if (Status == RunStatus.Stopping) this.Status = RunStatus.Stopped;
             this._threads.Clear();
             //Thread.CurrentThread.Abort();
@@ -291,10 +300,13 @@ namespace BatchFlow
         public int GetWorkingOn()
         {
             if (!_workingOn.ContainsKey(Thread.CurrentThread.ManagedThreadId)) return 0;
-            return _workingOn[Thread.CurrentThread.ManagedThreadId];
+            int value = _workingOn[Thread.CurrentThread.ManagedThreadId];
+            log.DebugFormat("Getting WonkingOn value: thread ID {0}, value {1}", Thread.CurrentThread.ManagedThreadId, value);
+            return value;
         }
         public void SetWorkingOn(int itemNr)
         {
+            log.DebugFormat("Setting WonkingOn value: thread ID {0}, value {1}", Thread.CurrentThread.ManagedThreadId, itemNr);
             _workingOn[Thread.CurrentThread.ManagedThreadId] = itemNr;
         }
         #endregion
@@ -326,10 +338,21 @@ namespace BatchFlow
             Tin inValue = default(Tin);
             try
             {
+                int order = 0;
                 try
                 {
-                    inValue = ((IReadableQueue<Tin>)StreamIn).Receive();
-                    haveValue = true;
+                    lock (_orderLock)
+                    {
+                        if (KeepOrder)
+                        {
+                            order = _orderCounter;
+                            _orderCounter++;
+                            this.SetWorkingOn(order);
+                            log.DebugFormat("Using KeepOrder: assigned order number {0} to value {1}", order, inValue);
+                        }
+                        inValue = ((IReadableQueue<Tin>)StreamIn).Receive();
+                        haveValue = true;
+                    }
                 }
                 catch (BoundedBlockingQueue.ClosedQueueException)
                 {
@@ -341,17 +364,8 @@ namespace BatchFlow
                     this.Status = RunStatus.Stopping;
                     return;
                 }
+                log.DebugFormat("Received value {0} from inqueue", inValue);
                 TrackStartProcessing();
-                int order = 0;
-                if (KeepOrder)
-                {
-                    lock (_orderLock)
-                    {
-                        order = _orderCounter;
-                        _orderCounter++;
-                        this.SetWorkingOn(order);
-                    }
-                }
 
                 // this is the actual work
                 Retry.Times(delegate { Process(inValue); }, this.Retries, Properties.Settings.Default.RetryWaitMillis, true);

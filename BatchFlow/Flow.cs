@@ -38,6 +38,7 @@ namespace BatchFlow
             foreach (var node in Nodes)
             {
                 node.Stop();
+
             }
             lock (_inProcessLock)
             {

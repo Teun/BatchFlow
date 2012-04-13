@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace BatchFlow
 {
     public class QueueEntryOrderKeeper<T> : QueueEntryOrderKeeper, IWritableQueue<T>
     {
+        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(QueueEntryOrderKeeper));
         private IWritableQueue _innerQueue;
         private TaskNode _innerTask;
         public QueueEntryOrderKeeper(TaskNode owner, IWritableQueue queue)
@@ -37,11 +39,13 @@ namespace BatchFlow
                 }
                 else if (workCount == _frontCount)
                 {
+                    log.DebugFormat("Sending item '{0}' to ordered output stream '{1}'", data, _innerQueue.Name);
                     _innerQueue.SendInner(data);
                 }
                 else if (workCount > _frontCount)
                 {
                     // we cannot send this on right now. We'll store it until all of the lower numbered streas are closed
+                    log.DebugFormat("Temporary storing item '{0}' (nr. {2}) because we are waiting for item nr. {1} first", data, workCount, _frontCount);
                     StoreForLater(workCount, data);
                 }
             }
@@ -55,6 +59,16 @@ namespace BatchFlow
                 queuedUpItems.Add(workCount, new Queue<T>());
             }
             queuedUpItems[workCount].Enqueue((T)data);
+
+            // If the queued up items list get large, there is probably one task taking relatively long.
+            // This is not necessarily a problem, but the collection of queuedUp items can become very 
+            // large and use up memory. We don't want to block the entry to this collection, but we will
+            // make the fast threads wait a little bit when the size of the collection grows too large.
+            // How long we wait and what is too large are arbitrary, but configurable.
+            if (queuedUpItems.Count > Properties.Settings.Default.QueuedItemsThreshold)
+            {
+                Thread.Sleep(Properties.Settings.Default.QueuedItemsOverflowSleepTime);
+            }
         }
 
         public string Name
@@ -72,6 +86,7 @@ namespace BatchFlow
         {
             lock (entrySync)
             {
+                
                 if (_frontCount == value)
                 {
                     // We are moving on 1 stream, no action needed
@@ -105,6 +120,7 @@ namespace BatchFlow
                 while (queuedUpItems[value].Count > 0)
                 {
                     var item = queuedUpItems[value].Dequeue();
+                    log.DebugFormat("Sending item {0} from temporary storage into the stream '{1}'", item, _innerQueue.Name);
                     _innerQueue.SendInner(item);
                 }
                 queuedUpItems.Remove(value);
