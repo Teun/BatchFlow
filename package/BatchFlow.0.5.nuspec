@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <version>0.5.1</version>
+    <version>0.5.2</version>
     <authors>Teun Duynstee</authors>
     <owners>Teun Duynstee</owners>
     <projectUrl>https://github.com/Teun/BatchFlow</projectUrl>
@@ -17,5 +17,6 @@
   </metadata>
   <files>
     <file src="..\BatchFlow\bin\Debug\BatchFlow.dll" target="lib\net35\BatchFlow.dll" />
-  </files>
+    <file src="..\BatchFlow\bin\Debug\net40\BatchFlow.dll" target="lib\net40\BatchFlow.dll" />
+ </files>
 </package>

@@ -114,5 +114,50 @@ namespace BatchFlow.UnitTests
                 vorig = item;
             }
         }
-    }
+		[Test]
+		public void KeepOrder3()
+		{
+			List<int> results = new List<int>();
+			Random r = new Random();
+			StartPoint<int> s = Helpers.GetStartpointCounter(1, 50);
+			TaskNode<int, int, int> process = new TaskNode<int, int, int>(
+				(input, output1, output2) =>
+				{
+					int sleeptime = r.Next(50);
+					Thread.Sleep(sleeptime);
+					if (input % 2 == 0)
+					{
+						output1.Send(input);
+					}
+					else
+					{
+						output2.Send(input);
+					}
+				}
+				) { ThreadNumber = 2, KeepOrder = true };
+			Collector<int> n = new Collector<int>();
+			Collector<int> n2 = new Collector<int>();
+			Flow f = Flow.FromAsciiArt(@"
+a-->b0-->c
+    1
+    |
+    V
+    d
+", new Dictionary<char, TaskNode>() { { 'a', s }, { 'b', process }, { 'c', n }, {'d', n2} });
+			f.Start();
+			f.RunToCompletion();
+			int vorig = 0;
+			foreach (var item in n.Items)
+			{
+				Assert.AreEqual(vorig + 2, item);
+				vorig = item;
+			}
+			vorig = -1;
+			foreach (var item in n2.Items)
+			{
+				Assert.AreEqual(vorig + 2, item);
+				vorig = item;
+			}
+		}
+	}
 }

@@ -1,11 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchFlow", "BatchFlow\BatchFlow.csproj", "{F1EE5B47-2A50-4B08-BDC6-9A11B430785D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchEngine.UnitTests", "BatchFlow.UnitTests\BatchEngine.UnitTests.csproj", "{25A578C0-B3E2-4EF8-B03E-B7D7F7714C4A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.csproj", "{47C4A4AB-ADDC-4B55-BDE8-F59240899D40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +19,6 @@ Global
 		{25A578C0-B3E2-4EF8-B03E-B7D7F7714C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25A578C0-B3E2-4EF8-B03E-B7D7F7714C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25A578C0-B3E2-4EF8-B03E-B7D7F7714C4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47C4A4AB-ADDC-4B55-BDE8-F59240899D40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47C4A4AB-ADDC-4B55-BDE8-F59240899D40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47C4A4AB-ADDC-4B55-BDE8-F59240899D40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47C4A4AB-ADDC-4B55-BDE8-F59240899D40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

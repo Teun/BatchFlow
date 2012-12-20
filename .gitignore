@@ -3,3 +3,6 @@ obj
 _Resharper.*
 *.suo
 *.user
+*.nupkg
+package/*
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="BatchFlow">
+</Property><Property Name="Solution File" Value="D:\projects\BatchFlowGit\BatchFlow.sln">
+</Property><Property Name="Date" Value="zondag 16 december 2012">
+</Property><Property Name="Time" Value="19:27">
+</Property></Properties><Event ErrorLevel="0" Project="BatchFlow" Source="BatchFlow\BatchFlow.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="BatchFlow" Source="BatchFlow\BatchFlow.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="BatchEngine.UnitTests" Source="BatchFlow.UnitTests\BatchEngine.UnitTests.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="BatchEngine.UnitTests" Source="BatchFlow.UnitTests\BatchEngine.UnitTests.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Samples" Source="Samples\Samples.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Samples" Source="Samples\Samples.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="BatchFlow.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="BatchFlow.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="BatchFlow" Source="BatchFlow\BatchFlow.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="BatchEngine.UnitTests" Source="BatchFlow.UnitTests\BatchEngine.UnitTests.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Samples" Source="Samples\Samples.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

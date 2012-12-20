@@ -372,7 +372,10 @@ namespace BatchFlow
 
                 if (KeepOrder)
                 {
-                    _orderKeeper.CloseStream(order);
+					foreach (var keeper in _orderKeepers)
+					{
+						keeper.CloseStream(order);
+					}
                 }
                 TrackEndProcessing();
                 RaiseItemProcessed(inValue);
@@ -406,7 +409,7 @@ namespace BatchFlow
                 return typeof(Tin);
             }
         }
-        QueueEntryOrderKeeper _orderKeeper;
+        IList<QueueEntryOrderKeeper> _orderKeepers = new List<QueueEntryOrderKeeper>();
         protected override IWritableQueue GetQueueEntryIntercept(IWritableQueue outQueue, Type t)
         {
             IWritableQueue result = base.GetQueueEntryIntercept(outQueue, t);
@@ -414,7 +417,7 @@ namespace BatchFlow
             {
                 Type KeepOrderOfT = typeof(QueueEntryOrderKeeper<>).MakeGenericType(new Type[] { t });
                 result = (IWritableQueue)Activator.CreateInstance(KeepOrderOfT, (TaskNode)this, result);
-                _orderKeeper = (QueueEntryOrderKeeper)result;
+                _orderKeepers.Add((QueueEntryOrderKeeper)result);
             }
             return result;
         }
