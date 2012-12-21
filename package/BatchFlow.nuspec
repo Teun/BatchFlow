@@ -16,7 +16,7 @@
     <tags>batch parallel threads threading dataflow asciiart task flow dataprocessing data processing producerconsumer producer consumer</tags>
   </metadata>
   <files>
-    <file src="..\BatchFlow\bin\Debug\BatchFlow.dll" target="lib\net35\BatchFlow.dll" />
-    <file src="..\BatchFlow\bin\Debug\net40\BatchFlow.dll" target="lib\net40\BatchFlow.dll" />
+    <file src="..\BatchFlow\bin\net35\BatchFlow.dll" target="lib\net35\BatchFlow.dll" />
+    <file src="..\BatchFlow\bin\net40\BatchFlow.dll" target="lib\net40\BatchFlow.dll" />
  </files>
 </package>
