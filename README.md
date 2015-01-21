@@ -20,6 +20,8 @@ Most of BatchFlow is just plain usefull. There is only one feature that is also 
 
 - Check out the wiki, with a tutorial and explanation of how BatchFlow works
 - Play with it. You can add BatchFlow to you project using NuGet:
+
     Install-Package BatchFlow
     
-    
+![TeamCity by JetBrains](http://www.jetbrains.com/img/banners/Codebetter.png)    
+[TeamCity](http://www.jetbrains.com/teamcity)
