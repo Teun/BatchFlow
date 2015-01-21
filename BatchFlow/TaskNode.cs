@@ -297,17 +297,25 @@ namespace BatchFlow
 
         #region thread info
         private Dictionary<int, int> _workingOn = new Dictionary<int, int>();
+        private object _toLockOn = new object();
         public int GetWorkingOn()
         {
-            if (!_workingOn.ContainsKey(Thread.CurrentThread.ManagedThreadId)) return 0;
-            int value = _workingOn[Thread.CurrentThread.ManagedThreadId];
+            int value;
+            lock(_toLockOn)
+            {
+                if (!_workingOn.ContainsKey(Thread.CurrentThread.ManagedThreadId)) return 0;
+                value = _workingOn[Thread.CurrentThread.ManagedThreadId];
+            }
             log.DebugFormat("Getting WonkingOn value: thread ID {0}, value {1}", Thread.CurrentThread.ManagedThreadId, value);
             return value;
         }
         public void SetWorkingOn(int itemNr)
         {
             log.DebugFormat("Setting WonkingOn value: thread ID {0}, value {1}", Thread.CurrentThread.ManagedThreadId, itemNr);
-            _workingOn[Thread.CurrentThread.ManagedThreadId] = itemNr;
+            lock (_toLockOn)
+            {
+                _workingOn[Thread.CurrentThread.ManagedThreadId] = itemNr;
+            }
         }
         #endregion
 
