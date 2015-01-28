@@ -242,13 +242,19 @@ namespace BatchFlow
             get 
             {
                 int t = Thread.CurrentThread.ManagedThreadId;
-                if (!_processingStarts.ContainsKey(t)) return 0;
-                return _processingStarts[t];
+				lock (_processingStarts)
+				{
+					if (!_processingStarts.ContainsKey(t)) return 0;
+					return _processingStarts[t];
+				}
             }
             set 
             {
                 int t = Thread.CurrentThread.ManagedThreadId;
-                _processingStarts[t] = value;
+				lock (_processingStarts)
+				{
+					_processingStarts[t] = value;
+				}
             }
         }
         private Dictionary<int, long> _waitingStarts = new Dictionary<int, long>();
@@ -257,13 +263,19 @@ namespace BatchFlow
             get
             {
                 int t = Thread.CurrentThread.ManagedThreadId;
-                if (!_waitingStarts.ContainsKey(t)) return 0;
-                return _waitingStarts[t];
+				lock (_waitingStarts)
+				{
+					if (!_waitingStarts.ContainsKey(t)) return 0;
+					return _waitingStarts[t];
+				}
             }
             set
             {
                 int t = Thread.CurrentThread.ManagedThreadId;
-                _waitingStarts[t] = value;
+				lock (_waitingStarts)
+				{
+					_waitingStarts[t] = value;
+				}
             }
         }
         protected internal void TrackStartProcessing()
@@ -297,11 +309,10 @@ namespace BatchFlow
 
         #region thread info
         private Dictionary<int, int> _workingOn = new Dictionary<int, int>();
-        private object _toLockOn = new object();
         public int GetWorkingOn()
         {
             int value;
-            lock(_toLockOn)
+            lock(_workingOn)
             {
                 if (!_workingOn.ContainsKey(Thread.CurrentThread.ManagedThreadId)) return 0;
                 value = _workingOn[Thread.CurrentThread.ManagedThreadId];
@@ -312,7 +323,7 @@ namespace BatchFlow
         public void SetWorkingOn(int itemNr)
         {
             log.DebugFormat("Setting WonkingOn value: thread ID {0}, value {1}", Thread.CurrentThread.ManagedThreadId, itemNr);
-            lock (_toLockOn)
+            lock (_workingOn)
             {
                 _workingOn[Thread.CurrentThread.ManagedThreadId] = itemNr;
             }
