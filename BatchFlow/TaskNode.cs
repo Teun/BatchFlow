@@ -92,11 +92,14 @@ namespace BatchFlow
         {
             if(Status == RunStatus.Running) Status = RunStatus.Stopping;
             Thread.Sleep(200);
-            foreach (var t in _threads)
+            lock (_threads)
             {
-                if (t.ThreadState != ThreadState.WaitSleepJoin && t.ManagedThreadId != Thread.CurrentThread.ManagedThreadId)
+                foreach (var t in _threads)
                 {
-                    t.Abort();
+                    if (t.ThreadState != ThreadState.WaitSleepJoin && t.ManagedThreadId != Thread.CurrentThread.ManagedThreadId)
+                    {
+                        t.Abort();
+                    }
                 }
             }
             // Clear instream
