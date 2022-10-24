@@ -1,3 +1,5 @@
+## This repository is archived
+
 BatchFlow is a .NET library that takes care of all the plumbing you need around large batch processing, especially the producer/consumer pattern that you (probably) should use.
 
 Version 0.5, which is released on April 14th, 2012, is reasonably stable. Has been tested with a number of real world applications.
